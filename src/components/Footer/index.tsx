@@ -60,6 +60,8 @@ class Footer extends React.Component<FooterProps, FooterState> {
         </button>
       );
     }
+
+    return undefined;
   }
 
   render() {

@@ -1,7 +1,13 @@
 /** TodoMVC model definitions **/
 declare interface TodoItemData {
+  id: TodoItemId;
+  text: string;
+  completed: boolean;
+}
+
+declare interface NewTodoItemData {
   id?: TodoItemId;
-  text?: string;
+  text: string;
   completed?: boolean;
 }
 

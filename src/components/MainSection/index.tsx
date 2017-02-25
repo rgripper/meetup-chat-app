@@ -3,7 +3,6 @@ import * as TodoActions from '../../actions/todos';
 import TodoItem from '../TodoItem';
 import Footer from '../Footer';
 import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../../constants/filters';
-import { connect } from 'react-redux';
 import * as style from './style.css';
 
 const TODO_FILTERS = {
@@ -52,6 +51,8 @@ class MainSection extends React.Component<MainSectionProps, MainSectionState> {
           onChange={actions.completeAll} />
       );
     }
+
+    return undefined;
   }
 
   renderFooter(completedCount: number) {
@@ -68,6 +69,8 @@ class MainSection extends React.Component<MainSectionProps, MainSectionState> {
           onShow={this.handleShow} />
       );
     }
+
+    return undefined;
   }
 
   render() {

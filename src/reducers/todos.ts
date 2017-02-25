@@ -17,26 +17,26 @@ export default handleActions<TodoStoreState, TodoItemData>({
   },
 
   [Actions.DELETE_TODO]: (state, action) => {
-    return state.filter(todo => todo.id !== action.payload);
+    return state.filter(todo => todo.id !== action.payload!.id);
   },
 
   [Actions.EDIT_TODO]: (state, action) => {
     return state.map(todo => {
-      return todo.id === action.payload.id
-        ? { ...todo, text: action.payload.text }
+      return todo.id === action.payload!.id
+        ? { ...todo, text: action.payload!.text }
         : todo
     });
   },
 
   [Actions.COMPLETE_TODO]: (state, action) => {
     return state.map(todo => {
-      return todo.id === action.payload
+      return todo.id === action.payload!.id
         ? { ...todo, completed: !todo.completed }
         : todo
     });
   },
 
-  [Actions.COMPLETE_ALL]: (state, action) => {
+  [Actions.COMPLETE_ALL]: (state) => {
     const areAllMarked = state.every(todo => todo.completed)
     return state.map(todo => {
       return {
@@ -46,7 +46,7 @@ export default handleActions<TodoStoreState, TodoItemData>({
     });
   },
 
-  [Actions.CLEAR_COMPLETED]: (state, action) => {
+  [Actions.CLEAR_COMPLETED]: (state) => {
     return state.filter(todo => todo.completed === false);
   }
 }, initialState);

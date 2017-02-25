@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
 import TodoTextInput from '../TodoTextInput';
-import { applyMiddleware } from 'redux';
 import * as style from './style.css';
 
 interface TodoItemProps {
@@ -34,7 +33,7 @@ class TodoItem extends React.Component<TodoItemProps, TodoItemState> {
     if (text.length === 0) {
       this.props.deleteTodo(id);
     } else {
-      this.props.editTodo({ id, text });
+      this.props.editTodo({ id, text, completed: false });
     }
     this.setState({ editing: false });
   }

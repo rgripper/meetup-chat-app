@@ -18,7 +18,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   handleSave(text: string) {
     if (text.length) {
-      this.props.addTodo({ text });
+      this.props.addTodo({ id: 0, text, completed: false });
     }
   }
 
