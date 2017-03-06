@@ -2,12 +2,6 @@ import { Reducer } from 'redux';
 import { Message } from './client/Message';
 import { User } from './client/User';
 
-export interface ChatSession {
-  readonly id: any,
-  readonly user: User,
-  readonly otherUsers: User[],
-  readonly messages: Message[],
-}
 
 export enum ChatActionType {
   SelfJoined, SelfLeft, MessageReceived, UserJoined, UserLeft
