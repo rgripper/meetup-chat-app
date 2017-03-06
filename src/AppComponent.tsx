@@ -4,7 +4,7 @@ import { AppState } from "./configureStore";
 export function AppComponent(state: AppState) {
   return (
     <div>
-      {state.chatSession == undefined ? 'Please, log in' : state.chatSession.user.name}
+      {state.chatSession == null ? 'Please, log in!' : state.chatSession.user.name}
     </div>
   );
 }
