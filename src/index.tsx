@@ -4,16 +4,17 @@ import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
-import App from './containers/App';
-import configureStore from './store';
+import { AppComponent } from './AppComponent';
+import { configureStore } from './configureStore';
 
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
+// Add mobile QR code view
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={App}>
+      <Route path="/" component={AppComponent}>
       </Route>
     </Router>
   </Provider>,
