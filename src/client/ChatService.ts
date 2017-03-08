@@ -1,6 +1,7 @@
+import * as io from 'socket.io-client';
 import { Message } from './Message';
 import { User } from './User';
-import * as io from 'socket.io-client';
+import { ChatState, ChatStateType } from "./ChatState";
 
 export interface ChatDataHandler {
     handleState: (x: ChatState) => void,
@@ -8,30 +9,6 @@ export interface ChatDataHandler {
     handleUserJoined: (x: User) => void,
     handleMessageReceived: (x: Message) => void,
 }
-
-export enum ChatStateType { AuthenticationFailed, AuthenticatedAndInitialized, NotInitialized, Authenticating }
-
-export interface ChatData {
-    readonly user: User,
-    readonly otherUsers: User[],
-    readonly messages: Message[],
-}
-
-export type ChatState =
-    | {
-        readonly type: ChatStateType.NotInitialized
-    }
-    | {
-        readonly type: ChatStateType.Authenticating
-    }
-    | {
-        readonly type: ChatStateType.AuthenticatedAndInitialized,
-        readonly data: ChatData
-    }
-    | {
-        readonly type: ChatStateType.AuthenticationFailed,
-        readonly errorMessage: string
-    }
 
 export const initialChatState: ChatState = { type: ChatStateType.NotInitialized };
 
@@ -62,11 +39,11 @@ export class ChatService {
 
     join(userName: string) {
         this.handler.handleState({ type: ChatStateType.Authenticating });
-        this.socket.emit('chat.auth-request', userName);
+        this.socket.emit('chat.client.authentication', userName);
     }
 
     private setUpHandler(socket: SocketIOClient.Socket, handler: ChatDataHandler) {
-        socket.on('chat.auth-response', function (result: { isSuccessful: true, initialData: ChatData } | { isSuccessful: false, errorMessage: string }) {
+        socket.on('chat.server.authentication-result', function (result: { isSuccessful: true, initialData: ChatData } | { isSuccessful: false, errorMessage: string }) {
             if (result.isSuccessful) {
                 handler.handleState({ type: ChatStateType.AuthenticatedAndInitialized, data: result.initialData });
             }
@@ -75,11 +52,7 @@ export class ChatService {
             }
         });
 
-        socket.on('chat.init-response', function (initState: ChatState) {
-            handler.handleState(initState);
-        });
-
-        socket.on('chat.event', function (event: ServerEvent) {
+        socket.on('chat.server.event', function (event: ServerEvent) {
             switch (event.type) {
                 case 'MessageReceived':
                     handler.handleMessageReceived(event.data);
