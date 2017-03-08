@@ -1,23 +1,34 @@
 import { Message } from './Message';
 import { User } from './User';
-import * as createSocket from 'socket.io-client';
+import * as io from 'socket.io-client';
 
 export interface ChatDataHandler {
     handleAuthenticated: (x: User) => void,
-    handleInitialState: (x: InitialState) => void,
+    handleState: (x: ChatState) => void,
     handleUserReft: (x: User) => void,
     handleUserJoined: (x: User) => void,
     handleMessageReceived: (x: Message) => void,
 }
 
+export enum ChatStateType { AuthenticationFailed, Initialized }
 
-export interface InitialState {
-  readonly user: User,
-  readonly otherUsers: User[],
-  readonly messages: Message[],
+export interface ChatData {
+    readonly user: User,
+    readonly otherUsers: User[],
+    readonly messages: Message[],
 }
 
-type ServerMessage =
+export type ChatState = 
+| {
+    readonly type: ChatStateType.Initialized,
+    readonly data: ChatData
+}
+| {
+    readonly type: ChatStateType.AuthenticationFailed,
+    readonly errorMessage: string
+}
+
+type ServerEvent =
     | {
         createionDate: Date,
         type: 'Authenticated',
@@ -26,7 +37,7 @@ type ServerMessage =
     | {
         createionDate: Date,
         type: 'InitialState',
-        data: InitialState
+        data: ChatState
     }
     | {
         createionDate: Date,
@@ -44,65 +55,41 @@ type ServerMessage =
         data: User
     }
 
-export function createSocketWithHandler(url: string, handler: ChatDataHandler) {
-    const socket = createSocket(url);
-    let hasInitialState = false;
-    let token: any = null;
-    const bufferedMessages: ServerMessage[] = [];
-    socket.on('message', function (message: ServerMessage) {
-        switch (message.type) {
-            case 'Authenticated':
-                handler.handleAuthenticated(message.data);
-                token = message.data.name;
-                socket.emit('GetInitialState', token);
-                return;
-            case 'InitialState':
-                hasInitialState = true;
-                handler.handleInitialState(message.data);
-                if (bufferedMessages.length > 0) {
-                    const orderedBufferedMessages = bufferedMessages.sort((a, b) => a.createionDate.getTime() - b.createionDate.getTime());
-                    orderedBufferedMessages.forEach(bufferedMessage => {
-                        switch (bufferedMessage.type) {
-                            case 'MessageReceived':
-                                handler.handleMessageReceived(bufferedMessage.data);
-                                return;
-                            case 'UserJoined':
-                                handler.handleUserJoined(bufferedMessage.data);
-                                return;
-                            case 'UserLeft':
-                                handler.handleUserReft(bufferedMessage.data);
-                                return;
-                        }
-                    })
-                }
-                return;
-            case 'MessageReceived':
-                if(hasInitialState) {
-                    handler.handleMessageReceived(message.data);
-                }
-                else {
-                    bufferedMessages.push(message);
-                }
-                return;
-            case 'UserJoined':
-                if(hasInitialState) {
-                    handler.handleUserJoined(message.data);
-                }
-                else {
-                    bufferedMessages.push(message);
-                }
-                return;
-            case 'UserLeft':
-                if(hasInitialState) {
-                    handler.handleUserReft(message.data);
-                }
-                else {
-                    bufferedMessages.push(message);
-                }
-                return;
-            default: 
-                throw new Error('Event is not supported');
-        }
-    });
-    socket.on('disconnect', function () { });
+export class SocketWrapper {
+    constructor(url: string, userName: string, handler: ChatDataHandler) {
+        const socket = io(url);
+        this.setUpHandler(socket, handler);
+        socket.emit('chat.auth-request', userName);
+        socket.emit('chat.join-request', userName);
+        
+    }
+
+    private setUpHandler(socket: SocketIOClient.Socket, handler: ChatDataHandler) {
+        socket.on('chat.auth-response', function (result: { isSuccessful: true } | { isSuccessful: false, errorMessage: string }) {
+            if (result.isSuccessful) {
+                socket.emit('chat.init-request');
+            }
+            else {
+                handler.handleState({ type: ChatStateType.AuthenticationFailed, errorMessage: result.errorMessage });
+            }
+         });
+
+        socket.on('chat.init-response', function (initState: ChatState) {
+            handler.handleState(initState);
+        });
+
+        socket.on('chat.event', function (event: ServerEvent) {
+            switch (event.type) {
+                case 'MessageReceived':
+                    handler.handleMessageReceived(event.data);
+                    return;
+                case 'UserJoined':
+                    handler.handleUserJoined(event.data);
+                    return;
+                case 'UserLeft':
+                    handler.handleUserReft(event.data);
+                    return;
+            }
+        });
+    }
 }
