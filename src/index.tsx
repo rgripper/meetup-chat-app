@@ -6,9 +6,17 @@ import { Provider } from 'react-redux';
 
 import { AppComponent } from './AppComponent';
 import { configureStore } from './configureStore';
+import { ChatService } from "./client/ChatService";
 
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
+
+const chatService = new ChatService('http://localhost:26335', {
+  handleState: store.dispatch({ type:  }),
+  handleMessageReceived: store.dispatch({ type: }),
+  handleUserJoined: store.dispatch({ type: }),
+  handleUserReft: store.dispatch({ type: }),
+});
 
 // Add mobile QR code view
 ReactDOM.render(

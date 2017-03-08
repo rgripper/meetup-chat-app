@@ -1,16 +1,17 @@
 import { Reducer } from 'redux';
 import { Message } from './client/Message';
 import { User } from './client/User';
+import { ChatState } from "./client/ChatService";
 
 
 export enum ChatActionType {
-  SelfJoined, SelfLeft, MessageReceived, UserJoined, UserLeft
+  Initialized, SelfLeft, MessageReceived, UserJoined, UserLeft
 }
 
 export type ChatAction =
   | {
-    type: ChatActionType.SelfJoined,
-    payload: { chatSession: ChatSession }
+    type: ChatActionType.Initialized,
+    payload: { chatState: ChatState }
   }
   | {
     type: ChatActionType.SelfLeft
