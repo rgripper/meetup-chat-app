@@ -5,7 +5,7 @@ import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
-import { AppComponent } from './AppComponent';
+import { AppContainerComponent } from './AppComponent';
 import { configureStore } from './configureStore';
 import { ChatService } from "./client/ChatService";
 import { User } from "./client/User";
@@ -40,7 +40,7 @@ const chatService = new ChatService('http://localhost:26335', {
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={AppComponent}>
+      <Route path="/" component={AppContainerComponent}>
       </Route>
     </Router>
   </Provider>,

@@ -1,10 +1,20 @@
 import * as React from 'react';
-import { AppState } from "./configureStore";
+import { AppState } from './configureStore';
+import { ChatStateType, ChatState } from "./client/ChatState";
+import { connect } from "react-redux";
 
-export function AppComponent(state: AppState) {
+function AppComponent(props: { chatState: ChatState }) {
   return (
     <div>
-      {state.chatSession == null ? 'Please, log in!' : state.chatSession.user.name}
+      { props.chatState.type != ChatStateType.AuthenticatedAndInitialized ? 'Please, log in!' : props.chatState.data.user.name }
     </div>
   );
 }
+
+const mapStateToProps = (state: AppState) => {
+  return { chatState: state.chatState };
+}
+
+export const AppContainerComponent = connect(
+  mapStateToProps
+)(AppComponent)

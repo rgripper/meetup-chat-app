@@ -1,8 +1,9 @@
-import { ChatState, initialChatState } from './client/ChatService';
+import { initialChatState } from './client/ChatService';
 import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { loggerMiddleware } from './loggerMiddleware';
-import { chatSessionReducer } from './chatSessionReducer';
+import { chatStateReducer } from './chatSessionReducer';
 import { routerReducer } from 'react-router-redux';
+import { ChatState } from "./client/ChatState";
 
 export interface AppState {
   readonly chatState: ChatState,
@@ -16,7 +17,7 @@ export function configureStore(initialState: AppState = initialAppState): Store<
     : createStore;
 
   const reducers = combineReducers({
-    chatSession: chatSessionReducer,
+    chatState: chatStateReducer,
     routing: routerReducer
   });
 

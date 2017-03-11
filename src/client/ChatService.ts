@@ -1,7 +1,7 @@
 import * as io from 'socket.io-client';
 import { Message } from './Message';
 import { User } from './User';
-import { ChatState, ChatStateType } from "./ChatState";
+import { ChatState, ChatStateType, ChatData } from "./ChatState";
 
 export interface ChatDataHandler {
     handleState: (x: ChatState) => void,
