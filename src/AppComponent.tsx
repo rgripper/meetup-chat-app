@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 function AppComponent(props: { chatState: ChatState }) {
   return (
     <div>
-      { props.chatState.type != ChatStateType.AuthenticatedAndInitialized ? 'Please, log in!' : props.chatState.data.user.name }
+      { props.chatState.type != ChatStateType.AuthenticatedAndInitialized ? 'Please, log in!' : ('Hi, ' + props.chatState.data.user.name) }
     </div>
   );
 }
@@ -17,4 +17,4 @@ const mapStateToProps = (state: AppState) => {
 
 export const AppContainerComponent = connect(
   mapStateToProps
-)(AppComponent)
+)(AppComponent);

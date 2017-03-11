@@ -7,15 +7,17 @@ import { Provider } from 'react-redux';
 
 import { AppContainerComponent } from './AppComponent';
 import { configureStore } from './configureStore';
-import { ChatService } from "./client/ChatService";
+
 import { User } from "./client/User";
 import { Message } from "./client/Message";
 import { ChatActionType } from "./chatSessionReducer";
 
+import { DummyChatService } from "./client/DummyChatService";
+
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
-const chatService = new ChatService('http://localhost:26335', {
+const chatService = new DummyChatService('http://localhost:26335', {
   handleState: (chatState: ChatState) => store.dispatch({    
     type: ChatActionType.Initialized,
     payload: { chatState }
