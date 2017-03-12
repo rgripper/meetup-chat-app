@@ -38,8 +38,12 @@ export class ChatService {
     }
 
     join(userName: string) {
-        this.handler.handleState({ type: ChatStateType.Authenticating });
+        this.handler.handleState({ type: ChatStateType.Authenticating, userName });
         this.socket.emit('chat.client.authentication', userName);
+    }
+
+    sendMessage(message: Message) {
+        this.socket.emit('chat.client.message', message);
     }
 
     private setUpHandler(socket: SocketIOClient.Socket, handler: ChatDataHandler) {

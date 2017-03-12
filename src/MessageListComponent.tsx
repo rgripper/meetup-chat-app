@@ -18,7 +18,6 @@ function MessageListComponent(props: { messages: Message[] }) {
 }
 
 const mapStateToProps = (state: AppState) => {
-
   return { messages: state.chatState.type != ChatStateType.AuthenticatedAndInitialized ? [] : state.chatState.data.messages };
 }
 

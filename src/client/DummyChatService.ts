@@ -1,5 +1,6 @@
 import { ChatState, ChatStateType } from "./ChatState";
 import { ChatDataHandler } from "./ChatService";
+import { Message } from "./Message";
 
 export class DummyChatService {
 
@@ -20,6 +21,10 @@ export class DummyChatService {
         this.handler.handleState(this.chatState);
     }
 
+    sendMessage(message: Message) {
+        this.handler.handleMessageReceived({ ...message, id: this.lastMessageId++ });
+    }
+
     private getRandomInt(min: number, max: number) {
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -38,7 +43,7 @@ export class DummyChatService {
             else if (prob > 0.2) {
                 if (this.chatState.data.otherUsers.length == 0) return;
                 const randomUser = this.chatState.data.otherUsers[this.getRandomInt(0, this.chatState.data.otherUsers.length)];
-                handler.handleMessageReceived({ id: this.lastMessageId++, sender: randomUser, text: 'Testos! ' + prob });
+                handler.handleMessageReceived({ id: this.lastMessageId++, sender: randomUser, text: 'Message ' + prob });
                 return;
             }
             else if (prob > 0.05) {

@@ -1,10 +1,11 @@
 import { User } from "./User";
-import { Message } from "./Message";
+import { Message, MessageSubmission } from './Message';
 
 export interface ChatData {
     readonly user: User,
     readonly otherUsers: User[],
     readonly messages: Message[],
+    readonly messageSubmissions: MessageSubmission[],
 }
 
 export enum ChatStateType { AuthenticationFailed, AuthenticatedAndInitialized, NotInitialized, Authenticating }
@@ -14,7 +15,8 @@ export type ChatState =
         readonly type: ChatStateType.NotInitialized
     }
     | {
-        readonly type: ChatStateType.Authenticating
+        readonly type: ChatStateType.Authenticating,
+        readonly userName: string
     }
     | {
         readonly type: ChatStateType.AuthenticatedAndInitialized,
