@@ -12,12 +12,16 @@ export class DummyChatService {
 
     constructor(url: string, private handler: ChatDataHandler) {
         console.log(url);
-        this.join('Me');
         this.setUpHandler(handler);
     }
 
     join(userName: string) {
         this.chatState = { type: ChatStateType.AuthenticatedAndInitialized, data: { user: { name: userName }, messages: [], otherUsers: [] } }
+        this.handler.handleState(this.chatState);
+    }
+
+    leave() {
+        this.chatState = { type: ChatStateType.NotInitialized };
         this.handler.handleState(this.chatState);
     }
 

@@ -39,7 +39,12 @@ export class ChatService {
 
     join(userName: string) {
         this.handler.handleState({ type: ChatStateType.Authenticating, userName });
-        this.socket.emit('chat.client.authentication', userName);
+        this.socket.emit('chat.client.join', userName);
+    }
+
+    leave() {
+        this.handler.handleState({ type: ChatStateType.NotInitialized });
+        this.socket.emit('chat.client.leave');
     }
 
     sendMessage(messageSubmission: MessageSubmission) {

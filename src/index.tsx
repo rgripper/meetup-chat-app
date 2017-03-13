@@ -38,13 +38,14 @@ const chatService = new DummyChatService('http://localhost:26335', {
 
 const sendMessage = (x) => chatService.sendMessage(x);
 const login = (x) => chatService.join(x);
+const leave = () => chatService.leave();
 (store as any).chatService = chatService; // TODO: figure out how to save instance
 
 // Add mobile QR code view
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={() => <AppContainer sendMessage={sendMessage} login={login}></AppContainer>}>
+      <Route path="/" component={() => <AppContainer sendMessage={sendMessage} login={login} leave={leave}></AppContainer>}>
       </Route>
     </Router>
   </Provider>,

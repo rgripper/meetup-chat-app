@@ -21,6 +21,7 @@ export class Login extends React.Component<Props, State> {
         return (
             <form onSubmit={this.handleFormSubmit}>
                 <input type="text" onChange={this.handleUserNameChange} />
+                <button type="submit">Login</button>
             </form>
         )
     }
