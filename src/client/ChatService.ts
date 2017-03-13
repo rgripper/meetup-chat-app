@@ -30,8 +30,12 @@ export class ChatService {
     private readonly socket: SocketIOClient.Socket;
 
     constructor(url: string, private handler: ChatDataHandler) {
-        this.socket = io(url);
+        this.socket = io(url, { autoConnect: false });
+        this.socket.on('connected', () => console.log('conn'));
+        this.socket.on('disconnected', () => console.log('disc'));
+
         this.setUpHandler(this.socket, handler);
+        this.socket.connect();
     }
 
     join(userName: string) {
