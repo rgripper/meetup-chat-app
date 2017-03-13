@@ -1,7 +1,7 @@
 import { initialChatState } from './client/ChatService';
 import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { loggerMiddleware } from './loggerMiddleware';
-import { chatStateReducer } from './chatSessionReducer';
+import { chatStateReducer } from './chatStateReducer';
 import { routerReducer } from 'react-router-redux';
 import { ChatState } from "./client/ChatState";
 
@@ -25,12 +25,12 @@ export function configureStore(initialState: AppState = initialAppState): Store<
 
   const store = createStoreWithMiddleware(reducers, initialState) as Store<AppState>;
 
-  // if (module.hot) {
-  //   module.hot.accept('../reducers', () => {
-  //     const nextReducer = require('../reducers');
-  //     store.replaceReducer(nextReducer);
-  //   });
-  // }
+  if (module.hot) {
+    module.hot.accept('./chatStateReducer', () => {
+      const nextReducer = require('./chatStateReducer');
+      store.replaceReducer(nextReducer);
+    });
+  }
 
   return store;
 }

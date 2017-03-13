@@ -1,11 +1,10 @@
 import { User } from "./User";
-import { Message, MessageSubmission } from './Message';
+import { Message } from './Message';
 
 export interface ChatData {
     readonly user: User,
     readonly otherUsers: User[],
-    readonly messages: Message[],
-    readonly messageSubmissions: MessageSubmission[],
+    readonly messages: Message[]
 }
 
 export enum ChatStateType { AuthenticationFailed, AuthenticatedAndInitialized, NotInitialized, Authenticating }

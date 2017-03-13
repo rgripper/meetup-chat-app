@@ -1,8 +1,6 @@
 import { User } from "./User";
 
 export interface MessageSubmission {
-  id: any,
-  isInProcess: boolean,
   text: string
 }
 

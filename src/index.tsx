@@ -5,12 +5,12 @@ import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
-import { AppContainerComponent } from './AppComponent';
+import { AppContainer } from './AppComponent';
 import { configureStore } from './configureStore';
 
 import { User } from "./client/User";
 import { Message } from "./client/Message";
-import { ChatActionType } from "./chatSessionReducer";
+import { ChatActionType } from "./chatStateReducer";
 
 import { DummyChatService } from "./client/DummyChatService";
 
@@ -36,13 +36,15 @@ const chatService = new DummyChatService('http://localhost:26335', {
   }),
 });
 
+const sendMessage = (x) => chatService.sendMessage(x);
+const login = (x) => chatService.join(x);
 (store as any).chatService = chatService; // TODO: figure out how to save instance
 
 // Add mobile QR code view
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={AppContainerComponent}>
+      <Route path="/" component={() => <AppContainer sendMessage={sendMessage} login={login}></AppContainer>}>
       </Route>
     </Router>
   </Provider>,

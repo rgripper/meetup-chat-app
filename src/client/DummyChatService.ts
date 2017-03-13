@@ -1,14 +1,14 @@
 import { ChatState, ChatStateType } from "./ChatState";
 import { ChatDataHandler } from "./ChatService";
-import { Message } from "./Message";
+import { Message, MessageSubmission } from './Message';
 
 export class DummyChatService {
 
     private chatState: ChatState = { type: ChatStateType.NotInitialized };
 
-    private readonly dummyNames = ['Sam', 'Bill', 'RubberyJoe', 'Jenny', 'GoomyTiger9'];
+    private readonly dummyNames = ['Sam', 'Bill', 'RubberyJoe', 'Jenny', 'Cyclepath9'];
 
-    private lastMessageId = 1;
+    private lastMessageId = 0;
 
     constructor(url: string, private handler: ChatDataHandler) {
         console.log(url);
@@ -21,8 +21,11 @@ export class DummyChatService {
         this.handler.handleState(this.chatState);
     }
 
-    sendMessage(message: Message) {
-        this.handler.handleMessageReceived({ ...message, id: this.lastMessageId++ });
+    sendMessage(messageSubmission: MessageSubmission) {
+        if (this.chatState.type != ChatStateType.AuthenticatedAndInitialized) throw new Error('Invalid state');
+        this.lastMessageId++;
+        const newMessage: Message = { ...messageSubmission, id: this.lastMessageId, sender: this.chatState.data.user };
+        this.handler.handleMessageReceived(newMessage);
     }
 
     private getRandomInt(min: number, max: number) {
@@ -43,7 +46,8 @@ export class DummyChatService {
             else if (prob > 0.2) {
                 if (this.chatState.data.otherUsers.length == 0) return;
                 const randomUser = this.chatState.data.otherUsers[this.getRandomInt(0, this.chatState.data.otherUsers.length)];
-                handler.handleMessageReceived({ id: this.lastMessageId++, sender: randomUser, text: 'Message ' + prob });
+                this.lastMessageId++;
+                handler.handleMessageReceived({ id: this.lastMessageId, sender: randomUser, text: `Message ${this.lastMessageId} from ${randomUser.name}` });
                 return;
             }
             else if (prob > 0.05) {

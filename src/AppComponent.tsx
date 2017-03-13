@@ -2,25 +2,37 @@ import * as React from 'react';
 import { AppState } from './configureStore';
 import { ChatStateType, ChatState } from "./client/ChatState";
 import { connect } from "react-redux";
-import { UserListContainerComponent } from "./UserListComponent";
-import { MessageListContainerComponent } from "./MessageListComponent";
-import { MessageInputContainerComponent } from "./MessageInputComponent";
+import { UserList } from "./UserList";
+import { MessageList } from "./MessageList";
+import { MessageInput } from "./MessageInput";
+import { Login } from "./Login";
+import { MessageSubmission } from './client/Message';
 
-function AppComponent(props: { chatState: ChatState }) {
-  return (
-    <div>
-      { props.chatState.type != ChatStateType.AuthenticatedAndInitialized ? 'Please, log in!' : ('Hi, ' + props.chatState.data.user.name) }
-      <UserListContainerComponent></UserListContainerComponent>
-      <MessageListContainerComponent></MessageListContainerComponent>
-      <MessageInputContainerComponent></MessageInputContainerComponent>
-    </div>
-  );
+type Props = { chatState: ChatState, sendMessage: (x: MessageSubmission) => void, login: (userName: string) => void };
+
+function AppComponent(props: Props) {
+  if (props.chatState.type == ChatStateType.AuthenticatedAndInitialized) {
+    return (
+      <div>
+        Hi, {props.chatState.data.user.name}
+        <UserList otherUsers={props.chatState.data.otherUsers}></UserList>
+        <MessageList messages={props.chatState.data.messages}></MessageList>
+        <MessageInput sendMessage={props.sendMessage}></MessageInput>
+      </div>
+    );
+  }
+  else {
+    return (
+      <Login login={props.login}></Login>
+    )
+  }
+
 }
 
-const mapStateToProps = (state: AppState) => {
-  return { chatState: state.chatState };
+const mapStateToProps = (state: AppState, otherProps: { sendMessage: (x: MessageSubmission) => void, login: (userName: string) => void }): Props => {
+  return { chatState: state.chatState, sendMessage: otherProps.sendMessage, login: otherProps.login };
 }
 
-export const AppContainerComponent = connect(
+export const AppContainer = connect(
   mapStateToProps
 )(AppComponent);
