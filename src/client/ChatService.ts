@@ -10,21 +10,18 @@ export interface ChatDataHandler {
     handleMessageReceived: (x: Message) => void,
 }
 
-export const initialChatState: ChatState = { type: ChatStateType.NotInitialized };
+export const initialChatState: ChatState = { type: ChatStateType.NotAuthenticated };
 
 type ServerEvent =
     | {
-        creationDate: Date,
         type: 'MessageReceived',
         data: Message
     }
     | {
-        creationDate: Date,
         type: 'UserJoined',
         data: User
     }
     | {
-        creationDate: Date,
         type: 'UserLeft',
         data: User
     }
@@ -43,7 +40,7 @@ export class ChatService {
     }
 
     leave() {
-        this.handler.handleState({ type: ChatStateType.NotInitialized });
+        this.handler.handleState({ type: ChatStateType.NotAuthenticated });
         this.socket.emit('chat.client.leave');
     }
 
@@ -52,7 +49,7 @@ export class ChatService {
     }
 
     private setUpHandler(socket: SocketIOClient.Socket, handler: ChatDataHandler) {
-        socket.on('chat.server.authentication-result', function (result: { isSuccessful: true, initialData: ChatData } | { isSuccessful: false, errorMessage: string }) {
+        socket.on('chat.server.join-result', function (result: { isSuccessful: true, initialData: ChatData } | { isSuccessful: false, errorMessage: string }) {
             if (result.isSuccessful) {
                 handler.handleState({ type: ChatStateType.AuthenticatedAndInitialized, data: result.initialData });
             }

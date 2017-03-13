@@ -5,7 +5,7 @@ import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
-import { AppContainer } from './AppComponent';
+import { AppContainer } from './AppContainer';
 import { configureStore } from './configureStore';
 
 import { User } from "./client/User";

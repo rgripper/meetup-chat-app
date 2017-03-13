@@ -10,18 +10,18 @@ import { MessageSubmission } from './client/Message';
 
 type Props = { chatState: ChatState, sendMessage: (x: MessageSubmission) => void, login: (userName: string) => void, leave: () => void };
 
-function AppComponent(props: Props) {
+function App(props: Props) {
   switch (props.chatState.type) {
-    case ChatStateType.NotInitialized:
+    case ChatStateType.NotAuthenticated:
       return <Login login={props.login}></Login>
     case ChatStateType.Authenticating:
       return <div className="loader">Loading...</div>;
     case ChatStateType.AuthenticatedAndInitialized:
       return (
         <div>
-          Hi, {props.chatState.data.user.name}
+          Hi, {props.chatState.data.currentUser.name}
           <button onClick={props.leave}>Logout</button>
-          <UserList otherUsers={props.chatState.data.otherUsers}></UserList>
+          <UserList users={props.chatState.data.users}></UserList>
           <MessageList messages={props.chatState.data.messages}></MessageList>
           <MessageInput sendMessage={props.sendMessage}></MessageInput>
         </div>
@@ -46,4 +46,4 @@ const mapStateToProps = (state: AppState, otherProps: { sendMessage: (x: Message
 
 export const AppContainer = connect(
   mapStateToProps
-)(AppComponent);
+)(App);

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { User } from "./client/User";
 
-export function UserList(props: { otherUsers: User[] }) {
+export function UserList(props: { users: User[] }) {
   return (
     <ul>
       {
-        props.otherUsers.map(user => {
+        props.users.map(user => {
           return <li key={user.name}>{user.name}</li>
         })
       }
