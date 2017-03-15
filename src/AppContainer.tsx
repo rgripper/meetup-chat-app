@@ -8,12 +8,12 @@ import { MessageInput } from "./MessageInput";
 import { Login } from "./Login";
 import { MessageSubmission } from './client/Message';
 
-type Props = { chatState: ChatState, sendMessage: (x: MessageSubmission) => void, login: (userName: string) => void, leave: () => void };
+type Props = { chatState: ChatState, sendMessage: (x: MessageSubmission) => void, join: (userName: string) => void, leave: () => void };
 
 function App(props: Props) {
   switch (props.chatState.type) {
     case ChatStateType.NotAuthenticated:
-      return <Login login={props.login}></Login>
+      return <Login join={props.join}></Login>
     case ChatStateType.Authenticating:
       return <div className="loader">Loading...</div>;
     case ChatStateType.AuthenticatedAndInitialized:
@@ -34,14 +34,14 @@ function App(props: Props) {
             <br />
             {props.chatState.errorMessage}
           </div>
-          <Login login={props.login}></Login>
+          <Login join={props.join}></Login>
         </div>
       );
   }
 }
 
-const mapStateToProps = (state: AppState, otherProps: { sendMessage: (x: MessageSubmission) => void, login: (userName: string) => void, leave: () => void }): Props => {
-  return { chatState: state.chatState, sendMessage: otherProps.sendMessage, login: otherProps.login, leave: otherProps.leave };
+const mapStateToProps = (state: AppState, otherProps: { sendMessage: (x: MessageSubmission) => void, join: (userName: string) => void, leave: () => void }): Props => {
+  return { chatState: state.chatState, sendMessage: otherProps.sendMessage, join: otherProps.join, leave: otherProps.leave };
 }
 
 export const AppContainer = connect(

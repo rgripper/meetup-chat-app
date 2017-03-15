@@ -11,14 +11,12 @@ import { configureStore } from './configureStore';
 import { User } from "./client/User";
 import { Message } from "./client/Message";
 import { ChatActionType } from "./chatStateReducer";
-
-// import { DummyChatService } from "./client/DummyChatService";
 import { ChatService } from "./client/ChatService";
 
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
-const chatService = new ChatService('http://localhost:26335', {
+const chatService = new ChatService('http://localhost:37753', {
   handleState: (chatState: ChatState) => store.dispatch({    
     type: ChatActionType.Initialized,
     payload: { chatState }
@@ -38,7 +36,7 @@ const chatService = new ChatService('http://localhost:26335', {
 });
 
 const sendMessage = (x) => chatService.sendMessage(x);
-const login = (x) => chatService.join(x);
+const join = (x) => chatService.join(x);
 const leave = () => chatService.leave();
 (store as any).chatService = chatService; // TODO: figure out how to save instance
 
@@ -46,7 +44,7 @@ const leave = () => chatService.leave();
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={() => <AppContainer sendMessage={sendMessage} login={login} leave={leave}></AppContainer>}>
+      <Route path="/" component={() => <AppContainer sendMessage={sendMessage} join={join} leave={leave}></AppContainer>}>
       </Route>
     </Router>
   </Provider>,

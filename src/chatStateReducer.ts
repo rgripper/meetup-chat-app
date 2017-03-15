@@ -39,7 +39,7 @@ export const chatStateReducer: Reducer<ChatState> = function (state: ChatState =
     }
     case ChatActionType.UserJoined: {
       if (state.type != ChatStateType.AuthenticatedAndInitialized) throw new Error('Invalid state');
-      const data: ChatData = { ...state.data, users: state.data.users.concat([action.payload.user]) };
+      const data: ChatData = { ...state.data, users: state.data.users.filter(x => x.name != action.payload.user.name).concat([action.payload.user]) };
       return { ...state, data };
     }
     case ChatActionType.UserLeft: {

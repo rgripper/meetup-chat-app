@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-type Props = { login: (userName: string) => void }
+type Props = { join: (userName: string) => void }
 type State = { userName: string }
 
 export class Login extends React.Component<Props, State> {
@@ -13,8 +13,9 @@ export class Login extends React.Component<Props, State> {
         this.setState({ userName: event.target.value });
     }
 
-    handleFormSubmit = () => {
-        this.props.login(this.state.userName);
+    handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        this.props.join(this.state.userName);
     }
 
     render() {

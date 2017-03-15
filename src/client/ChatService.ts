@@ -12,7 +12,7 @@ export interface ChatDataHandler {
 
 export const initialChatState: ChatState = { type: ChatStateType.NotAuthenticated };
 
-type ServerEvent =
+type CustomServerEvent =
     | {
         type: 'MessageReceived',
         data: Message
@@ -26,12 +26,15 @@ type ServerEvent =
         data: User
     }
 
+type JoinResult = { isSuccessful: true, initialData: ChatData } | { isSuccessful: false, errorMessage: string };
+
 export class ChatService {
     private readonly socket: SocketIOClient.Socket;
 
     constructor(url: string, private handler: ChatDataHandler) {
-        this.socket = io(url, { autoConnect: false });
-        this.socket.on('connected', () => console.log('conn'));
+        console.log(url);
+        this.socket = io(url, { transports: ['websocket'], autoConnect: false });
+        this.socket.on('connect', () => console.log('conn'));
         this.socket.on('disconnected', () => console.log('disc'));
 
         this.setUpHandler(this.socket, handler);
@@ -52,8 +55,9 @@ export class ChatService {
         this.socket.emit('chat.client.message', messageSubmission);
     }
 
-    private setUpHandler(socket: SocketIOClient.Socket, handler: ChatDataHandler) {
-        socket.on('chat.server.join-result', function (result: { isSuccessful: true, initialData: ChatData } | { isSuccessful: false, errorMessage: string }) {
+    setUpHandler(socket: SocketIOClient.Socket, handler: ChatDataHandler) {
+        socket.on('chat.server.join-result', function (result: JoinResult) {
+            console.debug('chat.server.join-result');
             if (result.isSuccessful) {
                 handler.handleState({ type: ChatStateType.AuthenticatedAndInitialized, data: result.initialData });
             }
@@ -62,7 +66,7 @@ export class ChatService {
             }
         });
 
-        socket.on('chat.server.event', function (event: ServerEvent) {
+        socket.on('chat.server.event', function (event: CustomServerEvent) {
             switch (event.type) {
                 case 'MessageReceived':
                     handler.handleMessageReceived(event.data);
