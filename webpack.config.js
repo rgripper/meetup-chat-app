@@ -36,23 +36,22 @@ module.exports = {
     mainFields: ['main']
   },
   module: {
-    loaders: [
+    rules: [
       // .ts, .tsx
       {
         test: /\.tsx?$/,
-        loader: isProduction
+        use: isProduction
           ? 'awesome-typescript-loader?module=es6'
           : [
             'react-hot-loader',
             'awesome-typescript-loader'
           ]
       },
-      // css 
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style-loader',
-          loader: [
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
             {
               loader: 'css-loader',
               query: {
@@ -64,6 +63,26 @@ module.exports = {
             },
             {
               loader: 'postcss-loader'
+            }
+          ]
+        })
+      },
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              query: {
+                modules: true,
+                sourceMap: !isProduction,
+                importLoaders: 1,
+                localIdentName: '[local]__[hash:base64:5]'
+              }
+            },
+            {
+              loader: 'sass-loader'
             }
           ]
         })

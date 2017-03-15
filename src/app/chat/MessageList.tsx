@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Message } from "./client/Message";
+import { Message } from "messaging/Message";
 
 export function MessageList(props: { messages: Message[] }) {
   return (

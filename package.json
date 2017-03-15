@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "node-sass": "^4.5.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
@@ -52,6 +53,7 @@
     "react-router-redux": "^4.0.7",
     "redux": "^3.6.0",
     "redux-actions": "^1.2.1",
+    "sass-loader": "^6.0.3",
     "socket.io-client": "^1.7.3"
   }
 }

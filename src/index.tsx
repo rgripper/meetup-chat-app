@@ -1,26 +1,33 @@
-import { ChatState } from './client/ChatState';
+import { JoinResult } from './messaging/ChatService';
+import { ChatState } from 'app/messaging/ChatState';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
-import { AppContainer } from './AppContainer';
+import { AppContainer } from 'app/AppContainer';
 import { configureStore } from './configureStore';
 
-import { User } from "./client/User";
-import { Message } from "./client/Message";
-import { ChatActionType } from "./chatStateReducer";
-import { ChatService } from "./client/ChatService";
+import { User } from "messaging/User";
+import { Message } from "messaging/Message";
+import { ChatActionType } from "chatStateReducer";
+import { ChatService } from "messaging/ChatService";
 
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
+import './index.scss';
+
 const chatService = new ChatService('http://localhost:37753', {
-  handleState: (chatState: ChatState) => store.dispatch({    
-    type: ChatActionType.Initialized,
-    payload: { chatState }
-  }),
+  handleJoinResult: (joinResult: JoinResult) => {
+    if (joinResult.isSuccessful) {
+      store.dispatch({    
+        type: ChatActionType.Initialized,
+        payload: { chatState }
+      })
+    }
+  },
   handleMessageReceived: (message: Message) => store.dispatch({    
     type: ChatActionType.MessageReceived,
     payload: { message }

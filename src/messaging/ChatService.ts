@@ -1,16 +1,15 @@
 import * as io from 'socket.io-client';
-import { Message, MessageSubmission } from './Message';
+import { Message } from './Message';
+import { MessageSubmission } from './MessageSubmission';
 import { User } from './User';
-import { ChatState, ChatStateType, ChatData } from "./ChatState";
+import { ChatData } from "./ChatData";
 
 export interface ChatDataHandler {
-    handleState: (x: ChatState) => void,
+    handleJoinResult: (x: JoinResult) => void,
     handleUserReft: (x: User) => void,
     handleUserJoined: (x: User) => void,
     handleMessageReceived: (x: Message) => void,
 }
-
-export const initialChatState: ChatState = { type: ChatStateType.NotAuthenticated };
 
 type CustomServerEvent =
     | {
@@ -26,7 +25,7 @@ type CustomServerEvent =
         data: User
     }
 
-type JoinResult = { isSuccessful: true, initialData: ChatData } | { isSuccessful: false, errorMessage: string };
+export type JoinResult = { isSuccessful: true, initialData: ChatData } | { isSuccessful: false, errorMessage: string };
 
 export class ChatService {
     private readonly socket: SocketIOClient.Socket;
@@ -42,7 +41,7 @@ export class ChatService {
     }
 
     join(userName: string) {
-        this.handler.handleState({ type: ChatStateType.Authenticating, userName });
+        
         this.socket.emit('chat.client.join', userName);
     }
 
@@ -58,12 +57,7 @@ export class ChatService {
     setUpHandler(socket: SocketIOClient.Socket, handler: ChatDataHandler) {
         socket.on('chat.server.join-result', function (result: JoinResult) {
             console.debug('chat.server.join-result');
-            if (result.isSuccessful) {
-                handler.handleState({ type: ChatStateType.AuthenticatedAndInitialized, data: result.initialData });
-            }
-            else {
-                handler.handleState({ type: ChatStateType.AuthenticationFailed, errorMessage: result.errorMessage });
-            }
+            handler.handleJoinResult(result);
         });
 
         socket.on('chat.server.event', function (event: CustomServerEvent) {

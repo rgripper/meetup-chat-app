@@ -1,15 +1,8 @@
-import { initialChatState } from './client/ChatService';
 import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { loggerMiddleware } from './loggerMiddleware';
 import { chatStateReducer } from './chatStateReducer';
 import { routerReducer } from 'react-router-redux';
-import { ChatState } from "./client/ChatState";
-
-export interface AppState {
-  readonly chatState: ChatState,
-}
-
-export const initialAppState: AppState = { chatState: initialChatState };
+import { initialAppState, AppState } from "app/AppState";
 
 export function configureStore(initialState: AppState = initialAppState): Store<AppState> {
   const create = window.devToolsExtension

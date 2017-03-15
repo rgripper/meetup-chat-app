@@ -19,6 +19,8 @@
     "noImplicitThis": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
+    "baseUrl": "src",
+    "rootDir": "src",
     "outDir": "build",
     "lib": [
       "es6",

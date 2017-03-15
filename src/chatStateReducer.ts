@@ -1,8 +1,8 @@
 import { Reducer } from 'redux';
-import { Message } from './client/Message';
-import { User } from './client/User';
-import { initialChatState } from "./client/ChatService";
-import { ChatData, ChatState, ChatStateType } from './client/ChatState';
+import { Message } from 'messaging/Message';
+import { User } from 'messaging/User';
+import { ChatState, ChatStateType, initialChatState } from 'app/chat/ChatState';
+import { ChatData } from "messaging/ChatData";
 
 export enum ChatActionType {
   Initialized, 

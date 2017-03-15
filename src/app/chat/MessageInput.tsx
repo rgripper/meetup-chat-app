@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MessageSubmission } from './client/Message';
+import { MessageSubmission } from 'messaging/MessageSubmission';
 
 type Props = { sendMessage: (x: MessageSubmission) => void };
 type State = { messageText: string }
@@ -25,8 +25,8 @@ export class MessageInput extends React.Component<Props, State> {
   render() {
     return (
       <form onSubmit={this.handleMessageSubmit}>
-        <textarea value={this.state.messageText} onInput={this.handleMessageTextChange}></textarea>
-        <button type="submit">Send</button>
+        <textarea className="form-control" value={this.state.messageText} onInput={this.handleMessageTextChange} required></textarea>
+        <button type="submit" className="btn btn-primary">Send</button>
       </form>
     )
   };

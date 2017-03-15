@@ -1,11 +1,4 @@
-import { User } from "./User";
-import { Message } from './Message';
-
-export interface ChatData {
-    readonly currentUser: User,
-    readonly users: User[],
-    readonly messages: Message[]
-}
+import { ChatData } from "messaging/ChatData";
 
 export enum ChatStateType { AuthenticationFailed, AuthenticatedAndInitialized, NotAuthenticated, Authenticating }
 
@@ -25,3 +18,5 @@ export type ChatState =
         readonly type: ChatStateType.AuthenticationFailed,
         readonly errorMessage: string
     }
+
+export const initialChatState: ChatState = { type: ChatStateType.NotAuthenticated };

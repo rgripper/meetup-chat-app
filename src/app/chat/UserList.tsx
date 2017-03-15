@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { User } from "./client/User";
+import { User } from "messaging/User";
 
 export function UserList(props: { users: User[] }) {
   return (
