@@ -1,9 +1,14 @@
+.container {
+    margin-top: 4em;
+}
+
 ul.user-list {
     list-style-type: none;
 
     > li {
         display: inline-block;
-
+        margin-left: 0.5em;
+        
         > .avatar {
             width: 3em;
             height: 3em;
