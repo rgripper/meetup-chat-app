@@ -30,7 +30,7 @@ export type JoinResult = { isSuccessful: true, initialData: ChatData } | { isSuc
 export class ChatService {
     private readonly socket: SocketIOClient.Socket;
 
-    constructor(url: string, private handler: ChatDataHandler) {
+    constructor(url: string, handler: ChatDataHandler) {
         console.log(url);
         this.socket = io(url, { transports: ['websocket'], autoConnect: false });
         this.socket.on('connect', () => console.log('conn'));
@@ -41,12 +41,10 @@ export class ChatService {
     }
 
     join(userName: string) {
-        
         this.socket.emit('chat.client.join', userName);
     }
 
     leave() {
-        this.handler.handleState({ type: ChatStateType.NotAuthenticated });
         this.socket.emit('chat.client.leave');
     }
 

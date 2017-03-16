@@ -24,6 +24,7 @@ export class Login extends React.Component<Props, State> {
         return (
             <div className="row">
                 <form onSubmit={this.handleFormSubmit} className="col-md-6 col-md-offset-3">
+                    <legend>Login</legend>
                     <div className="form-group">
                         <label className="control-label">User name</label>
                         <input className="form-control" type="text" onChange={this.handleUserNameChange} required/>

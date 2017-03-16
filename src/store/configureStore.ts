@@ -2,7 +2,7 @@ import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
 import { loggerMiddleware } from './loggerMiddleware';
 import { chatStateReducer } from './chatStateReducer';
 import { routerReducer } from 'react-router-redux';
-import { initialAppState, AppState } from "app/AppState";
+import { initialAppState, AppState } from "./AppState";
 
 export function configureStore(initialState: AppState = initialAppState): Store<AppState> {
   const create = window.devToolsExtension

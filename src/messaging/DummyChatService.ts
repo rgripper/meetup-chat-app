@@ -1,4 +1,4 @@
-import { ChatState, ChatStateType } from "app/chat/ChatState";
+import { ChatState, ChatStateType } from "store/ChatState";
 import { ChatDataHandler } from "./ChatService";
 import { Message } from './Message';
 import { MessageSubmission } from './MessageSubmission';
@@ -18,13 +18,12 @@ export class DummyChatService {
 
     join(userName: string) {
         const currentUser = { name: userName };
-        this.chatState = { type: ChatStateType.AuthenticatedAndInitialized, data: { currentUser, messages: [], users: [currentUser] } }
-        this.handler.handleState(this.chatState);
+        this.chatState = { type: ChatStateType.AuthenticatedAndInitialized, data: { currentUser, messages: [], users: [currentUser] } };
+        this.handler.handleJoinResult({ isSuccessful: true, initialData: this.chatState.data });
     }
 
     leave() {
         this.chatState = { type: ChatStateType.NotAuthenticated };
-        this.handler.handleState(this.chatState);
     }
 
     sendMessage(messageSubmission: MessageSubmission) {

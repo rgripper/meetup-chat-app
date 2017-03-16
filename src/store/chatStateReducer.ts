@@ -1,18 +1,25 @@
 import { Reducer } from 'redux';
 import { Message } from 'messaging/Message';
 import { User } from 'messaging/User';
-import { ChatState, ChatStateType, initialChatState } from 'app/chat/ChatState';
+import { ChatState, ChatStateType, initialChatState } from './ChatState';
 import { ChatData } from "messaging/ChatData";
 
 export enum ChatActionType {
-  Initialized, 
-  MessageSubmissionCreated, MessageSubmissionInProcess, MessageSubmissionCompleted, 
+  Left,
+  JoinInProgress,
+  JoinResultReceived, 
   MessageReceived, UserJoined, UserLeft
 }
 
 export type ChatAction =
   | {
-    type: ChatActionType.Initialized,
+    type: ChatActionType.Left
+  }
+  | {
+    type: ChatActionType.JoinInProgress
+  }
+  | {
+    type: ChatActionType.JoinResultReceived,
     payload: { chatState: ChatState }
   }
   | {
@@ -30,7 +37,11 @@ export type ChatAction =
 
 export const chatStateReducer: Reducer<ChatState> = function (state: ChatState = initialChatState, action: ChatAction) {
   switch (action.type) {
-    case ChatActionType.Initialized:
+    case ChatActionType.Left:
+      return { type: ChatStateType.NotAuthenticated } as ChatState;
+    case ChatActionType.JoinInProgress:
+      return { type: ChatStateType.Authenticating } as ChatState;
+    case ChatActionType.JoinResultReceived:
       return action.payload.chatState;
     case ChatActionType.MessageReceived: {
       if (state.type != ChatStateType.AuthenticatedAndInitialized) throw new Error('Invalid state');

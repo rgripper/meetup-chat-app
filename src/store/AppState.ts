@@ -1,4 +1,4 @@
-import { ChatState, initialChatState } from "app/chat/ChatState";
+import { ChatState, initialChatState } from "./ChatState";
 
 export const initialAppState: AppState = { chatState: initialChatState };
 

@@ -7,8 +7,7 @@ export type ChatState =
         readonly type: ChatStateType.NotAuthenticated
     }
     | {
-        readonly type: ChatStateType.Authenticating,
-        readonly userName: string
+        readonly type: ChatStateType.Authenticating
     }
     | {
         readonly type: ChatStateType.AuthenticatedAndInitialized,

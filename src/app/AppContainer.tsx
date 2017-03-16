@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { AppState } from 'app/AppState';
-import { ChatStateType, ChatState } from "app/chat/ChatState";
+import { AppState } from '../store/AppState';
+import { ChatStateType, ChatState } from "../store/ChatState";
 import { connect } from "react-redux";
-import { UserList } from "app/chat/UserList";
-import { MessageList } from "app/chat/MessageList";
-import { MessageInput } from "app/chat/MessageInput";
-import { Login } from "app/chat/Login";
-import { MessageSubmission } from 'messaging/MessageSubmission';
+import { UserList } from "../app/chat/UserList";
+import { MessageList } from "../app/chat/MessageList";
+import { MessageInput } from "../app/chat/MessageInput";
+import { Login } from "../app/chat/Login";
+import { MessageSubmission } from '../messaging/MessageSubmission';
 
 type Props = { chatState: ChatState, sendMessage: (x: MessageSubmission) => void, join: (userName: string) => void, leave: () => void };
 
@@ -19,8 +19,10 @@ function App(props: Props) {
     case ChatStateType.AuthenticatedAndInitialized:
       return (
         <div>
-          Hi, {props.chatState.data.currentUser.name}
-          <button className="btn btn-default btn-sm" onClick={props.leave}>Leave</button>
+          <h2>
+            Hi, {props.chatState.data.currentUser.name}
+            <button className="btn btn-default btn-sm" onClick={props.leave}>Leave</button>
+          </h2>
           <UserList users={props.chatState.data.users}></UserList>
           <MessageList messages={props.chatState.data.messages}></MessageList>
           <MessageInput sendMessage={props.sendMessage}></MessageInput>
