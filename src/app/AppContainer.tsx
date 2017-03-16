@@ -24,7 +24,7 @@ function App(props: Props) {
             <div className="col-sm-3"><button className="btn btn-default btn-sm" onClick={props.leave}>Leave</button></div>
           </div>
           
-          <MessageList messages={props.chatState.data.messages}></MessageList>
+          <MessageList messages={props.chatState.data.messages} currentUser={props.chatState.data.currentUser}></MessageList>
           <MessageInput sendMessage={props.sendMessage}></MessageInput>
         </div>
       );

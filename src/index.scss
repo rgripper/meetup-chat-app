@@ -1,19 +1,67 @@
+.avatar {
+    display: block;
+    margin: 0 auto;
+
+    img {
+        width: 100%;
+    }
+}
+
 .container {
     margin-top: 4em;
 }
 
-ul.user-list {
+.user-list {
     list-style-type: none;
 
-    > li {
+    > * {
         display: inline-block;
-        margin-left: 0.5em;
+        margin-left: 2.5em;
         
         > .avatar {
             width: 3em;
             height: 3em;
-            display: block;
-            margin: 0 auto;
         }
     }
+
+    overflow: auto;
+}
+
+.message-list {
+    list-style-type: none;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    margin: 0 auto 0.5em auto;
+    height: 60vh;
+
+    > * {
+        padding: 0.5em;
+        margin-bottom: 0.5em;
+        font-size: 2rem;
+        color: white;
+        position: relative;
+    }
+
+    > .from-current {
+        background: #2196F3;
+        margin-right: 4em;
+
+        .avatar {
+            display: none;
+        }
+    }
+
+    > .to-current {
+        background: #FFC107;
+        margin-left: 4em;
+        padding-right: 2em;
+
+        .avatar {
+            width: 1em;
+            height: 1em;
+            float: right;
+        }
+    }
+
+
 }

@@ -32,7 +32,7 @@ export type ChatAction =
   }
   | {
     type: ChatActionType.UserLeft,
-    payload: { user: User }
+    payload: { userName: string }
   }
 
 export const chatStateReducer: Reducer<ChatState> = function (state: ChatState = initialChatState, action: ChatAction) {
@@ -44,18 +44,18 @@ export const chatStateReducer: Reducer<ChatState> = function (state: ChatState =
     case ChatActionType.JoinResultReceived:
       return action.payload.chatState;
     case ChatActionType.MessageReceived: {
-      if (state.type != ChatStateType.AuthenticatedAndInitialized) throw new Error('Invalid state');
+      if (state.type != ChatStateType.AuthenticatedAndInitialized) return state;
       const data: ChatData = { ...state.data, messages: state.data.messages.concat([action.payload.message]) };
       return { ...state, data };
     }
     case ChatActionType.UserJoined: {
-      if (state.type != ChatStateType.AuthenticatedAndInitialized) throw new Error('Invalid state');
+      if (state.type != ChatStateType.AuthenticatedAndInitialized) return state;
       const data: ChatData = { ...state.data, users: state.data.users.filter(x => x.name != action.payload.user.name).concat([action.payload.user]) };
       return { ...state, data };
     }
     case ChatActionType.UserLeft: {
-      if (state.type != ChatStateType.AuthenticatedAndInitialized) throw new Error('Invalid state');
-      const data: ChatData = { ...state.data, users: state.data.users.filter(x => x != action.payload.user) };
+      if (state.type != ChatStateType.AuthenticatedAndInitialized) return state;
+      const data: ChatData = { ...state.data, users: state.data.users.filter(x => x.name != action.payload.userName) };
       return { ...state, data };
     }
     default:

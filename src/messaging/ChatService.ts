@@ -6,8 +6,8 @@ import { ChatData } from "./ChatData";
 
 export interface ChatDataHandler {
     handleJoinResult: (x: JoinResult) => void,
-    handleUserReft: (x: User) => void,
     handleUserJoined: (x: User) => void,
+    handleUserReft: (userName: string) => void,
     handleMessageReceived: (x: Message) => void,
 }
 
@@ -22,7 +22,7 @@ type CustomServerEvent =
     }
     | {
         type: 'UserLeft',
-        data: User
+        data: string
     }
 
 export type JoinResult = { isSuccessful: true, initialData: ChatData } | { isSuccessful: false, errorMessage: string };

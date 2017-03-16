@@ -67,8 +67,8 @@ export class DummyChatService {
             else {
                 if (otherUsers.length == 0) return;
                 const leavingUser = otherUsers[this.getRandomInt(0, otherUsers.length)];
-                this.chatState = { ...this.chatState, data: { ...this.chatState.data, users: this.chatState.data.users.filter(x => x != leavingUser) } };
-                handler.handleUserReft(leavingUser);
+                this.chatState = { ...this.chatState, data: { ...this.chatState.data, users: this.chatState.data.users.filter(x => x.name != leavingUser.name) } };
+                handler.handleUserReft(leavingUser.name);
                 return;
             }
         }, 1000);

@@ -39,9 +39,9 @@ const chatService = new ChatService(appSettings.chatServerUrl, {
     type: ChatActionType.UserJoined,
     payload: { user }
   }),
-  handleUserReft: (user: User) => store.dispatch({    
+  handleUserReft: (userName: string) => store.dispatch({    
     type: ChatActionType.UserLeft,
-    payload: { user }
+    payload: { userName }
   }),
 });
 
@@ -54,9 +54,9 @@ const leave = () => {
   store.dispatch({ type: ChatActionType.Left });
   chatService.leave();
 }
-(store as any).chatService = chatService; // TODO: figure out how to save instance
+(store as any).chatService = chatService;
 
-// Add mobile QR code view
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
