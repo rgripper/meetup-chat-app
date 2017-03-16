@@ -19,11 +19,11 @@ function App(props: Props) {
     case ChatStateType.AuthenticatedAndInitialized:
       return (
         <div>
-          <h2>
-            Hi, {props.chatState.data.currentUser.name}
-            <button className="btn btn-default btn-sm" onClick={props.leave}>Leave</button>
-          </h2>
-          <UserList users={props.chatState.data.users}></UserList>
+          <div className="row">
+            <div className="col-sm-9"><UserList users={props.chatState.data.users}></UserList></div>
+            <div className="col-sm-3"><button className="btn btn-default btn-sm" onClick={props.leave}>Leave</button></div>
+          </div>
+          
           <MessageList messages={props.chatState.data.messages}></MessageList>
           <MessageInput sendMessage={props.sendMessage}></MessageInput>
         </div>

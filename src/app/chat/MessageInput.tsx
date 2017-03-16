@@ -25,8 +25,14 @@ export class MessageInput extends React.Component<Props, State> {
   render() {
     return (
       <form onSubmit={this.handleMessageSubmit}>
-        <textarea className="form-control" value={this.state.messageText} onInput={this.handleMessageTextChange} required></textarea>
-        <button type="submit" className="btn btn-primary">Send</button>
+        <div className="form-roup row">
+          <div className="col-sm-9">
+            <textarea className="form-control" value={this.state.messageText} onInput={this.handleMessageTextChange} required></textarea>
+          </div>
+          <div className="col-sm-3">
+            <button type="submit" className="btn btn-primary">Send</button>
+          </div>
+        </div>
       </form>
     )
   };

@@ -9,6 +9,10 @@ const outPath = path.join(__dirname, './dist');
 // plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const extractSass = new ExtractTextPlugin({
+    filename: "[name].[contenthash].css",
+    //disable: process.env.NODE_ENV === "development"
+});
 const { TsConfigPathsPlugin, CheckerPlugin } = require('awesome-typescript-loader');
 
 module.exports = {
@@ -68,24 +72,12 @@ module.exports = {
           ]
         })
       },
-      {
+      { // sass / scss loader for webpack
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              query: {
-                modules: true,
-                sourceMap: !isProduction,
-                importLoaders: 1,
-                localIdentName: '[local]__[hash:base64:5]'
-              }
-            },
-            {
-              loader: 'sass-loader'
-            }
-          ]
+        use: extractSass.extract({
+          use: ["css-loader", "sass-loader"],
+          // use style-loader in development 
+          fallback: "style-loader"
         })
       },
       // static assets 
@@ -115,10 +107,7 @@ module.exports = {
       minChunks: Infinity
     }),
     new webpack.optimize.AggressiveMergingPlugin(),
-    new ExtractTextPlugin({
-      filename: 'styles.css',
-      disable: !isProduction
-    }),
+    extractSass,
     new HtmlWebpackPlugin({
       template: 'index.html'
     })
