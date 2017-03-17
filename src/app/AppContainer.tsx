@@ -2,9 +2,6 @@ import * as React from 'react';
 import { AppState } from '../store/AppState';
 import { ChatStateType, ChatState } from "../store/ChatState";
 import { connect } from "react-redux";
-import { UserList } from "../app/chat/UserList";
-import { MessageList } from "../app/chat/MessageList";
-import { MessageInput } from "../app/chat/MessageInput";
 import { Login } from "../app/chat/Login";
 import { MessageSubmission } from '../messaging/MessageSubmission';
 
@@ -20,12 +17,9 @@ function App(props: Props) {
       return (
         <div>
           <div className="row">
-            <div className="col-sm-9"><UserList users={props.chatState.data.users}></UserList></div>
+            <div className="col-sm-9"></div>
             <div className="col-sm-3"><button className="btn btn-default btn-sm" onClick={props.leave}>Leave</button></div>
           </div>
-          
-          <MessageList messages={props.chatState.data.messages} currentUser={props.chatState.data.currentUser}></MessageList>
-          <MessageInput sendMessage={props.sendMessage}></MessageInput>
         </div>
       );
     case ChatStateType.AuthenticationFailed:
