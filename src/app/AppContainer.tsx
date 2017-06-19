@@ -5,7 +5,15 @@ import { connect } from "react-redux";
 import { Login } from "../app/chat/Login";
 import { MessageSubmission } from '../messaging/MessageSubmission';
 
-type Props = { chatState: ChatState, sendMessage: (x: MessageSubmission) => void, join: (userName: string) => void, leave: () => void };
+type Actions = {
+  sendMessage: (x: MessageSubmission) => void,
+  join: (userName: string) => void,
+  leave: () => void 
+};
+
+type Props  = Actions & { 
+  chatState: ChatState
+};
 
 function App(props: Props) {
   switch (props.chatState.type) {
@@ -36,9 +44,18 @@ function App(props: Props) {
   }
 }
 
-const mapStateToProps = (state: AppState, otherProps: { sendMessage: (x: MessageSubmission) => void, join: (userName: string) => void, leave: () => void }): Props => {
-  return { chatState: state.chatState, sendMessage: otherProps.sendMessage, join: otherProps.join, leave: otherProps.leave };
-}
+const mapStateToProps = (
+      state: AppState, 
+      otherProps: { 
+        sendMessage: (x: MessageSubmission) => void, 
+        join: (userName: string) => void, 
+        leave: () => void 
+      }): Props => ({
+          chatState: state.chatState, 
+          sendMessage: otherProps.sendMessage, 
+          join: otherProps.join, 
+          leave: otherProps.leave 
+      });
 
 export const AppContainer = connect(
   mapStateToProps
