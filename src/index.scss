@@ -38,11 +38,14 @@
         padding: 0.5em;
         margin-bottom: 0.5em;
         font-size: 2rem;
-        color: white;
         position: relative;
     }
 
-    > .from-current {
+    > .from, > .to {
+        color: white;
+    }
+
+    > .from {
         background: #2196F3;
         margin-right: 4em;
 
@@ -51,7 +54,7 @@
         }
     }
 
-    > .to-current {
+    > .to {
         background: #FFC107;
         margin-left: 4em;
         padding-right: 2em;
@@ -62,6 +65,4 @@
             float: right;
         }
     }
-
-
 }
