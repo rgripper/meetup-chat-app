@@ -1,6 +1,6 @@
 import * as io from 'socket.io-client';
 import { Message } from './Message';
-import { MessageSubmission } from './MessageSubmission';
+import { SubmittedMessage } from './SubmittedMessage';
 import { User } from './User';
 import { ChatData } from "./ChatData";
 
@@ -48,8 +48,8 @@ export class ChatService {
         this.socket.emit('chat.client.leave');
     }
 
-    sendMessage(messageSubmission: MessageSubmission) {
-        this.socket.emit('chat.client.message', messageSubmission);
+    sendMessage(message: SubmittedMessage) {
+        this.socket.emit('chat.client.message', message);
     }
 
     setUpHandler(socket: SocketIOClient.Socket, handler: ChatDataHandler) {

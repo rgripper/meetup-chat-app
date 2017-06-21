@@ -1,24 +1,24 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Router, Route, browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
+import { Router, Route } from 'react-router';
 import { Provider } from 'react-redux';
+import { createBrowserHistory } from "history";
 
 import { AppContainer } from './app/AppContainer';
 import { configureStore } from './store/configureStore';
 
-import { ChatStateType } from './store/ChatState';
+import { ChatStateType } from './store/app/chat/ChatState';
 import { JoinResult } from './messaging/ChatService';
 import { User } from "./messaging/User";
 import { Message } from "./messaging/Message";
-import { ChatActionType } from "./store/chatStateReducer";
+import { ChatActionType } from "./store/app/chat/chatStateReducer";
 import { ChatService } from "./messaging/ChatService";
 import { appSettings } from './app/appSettings';
+import { SubmittedMessage } from "./messaging/SubmittedMessage";
+import './index.scss';
 
 const store = configureStore();
-const history = syncHistoryWithStore(browserHistory, store);
-
-import './index.scss';
+const history = createBrowserHistory();
 
 const chatService = new ChatService(appSettings.chatServerUrl, {
   handleJoinResult: (joinResult: JoinResult) => {
@@ -45,10 +45,10 @@ const chatService = new ChatService(appSettings.chatServerUrl, {
   }),
 });
 
-const sendMessage = (x) => chatService.sendMessage(x);
-const join = (x) => {
+const sendMessage = (message: SubmittedMessage) => chatService.sendMessage(message);
+const join = (userName: string) => {
   store.dispatch({ type: ChatActionType.JoinInProgress });
-  chatService.join(x);
+  chatService.join(userName);
 }
 const leave = () => {
   store.dispatch({ type: ChatActionType.Left });

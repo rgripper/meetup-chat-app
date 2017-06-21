@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { AppState } from '../store/AppState';
-import { ChatStateType, ChatState } from "../store/ChatState";
+import { AppState } from '../store/app/AppState';
+import { ChatStateType, ChatState } from "../store/app/chat/ChatState";
 import { connect } from "react-redux";
 import { Login } from "../app/chat/Login";
-import { MessageSubmission } from '../messaging/MessageSubmission';
+import { SubmittedMessage } from '../messaging/SubmittedMessage';
 
 type Actions = {
-  sendMessage: (x: MessageSubmission) => void,
+  sendMessage: (x: SubmittedMessage) => void,
   join: (userName: string) => void,
   leave: () => void 
 };
@@ -47,7 +47,7 @@ function App(props: Props) {
 const mapStateToProps = (
       state: AppState, 
       otherProps: { 
-        sendMessage: (x: MessageSubmission) => void, 
+        sendMessage: (x: SubmittedMessage) => void, 
         join: (userName: string) => void, 
         leave: () => void 
       }): Props => ({

@@ -1,7 +1,7 @@
-import { ChatState, ChatStateType } from "store/ChatState";
+import { ChatState, ChatStateType } from "store/app/chat/ChatState";
 import { ChatDataHandler } from "./ChatService";
 import { Message } from './Message';
-import { MessageSubmission } from './MessageSubmission';
+import { SubmittedMessage } from './SubmittedMessage';
 
 export class DummyChatService {
 
@@ -26,7 +26,7 @@ export class DummyChatService {
         this.chatState = { type: ChatStateType.NotAuthenticated };
     }
 
-    sendMessage(messageSubmission: MessageSubmission) {
+    sendMessage(messageSubmission: SubmittedMessage) {
         if (this.chatState.type != ChatStateType.AuthenticatedAndInitialized) throw new Error('Invalid state');
         this.lastMessageId++;
         const newMessage: Message = { ...messageSubmission, id: this.lastMessageId, sender: this.chatState.data.currentUser, creationDate: new Date() };

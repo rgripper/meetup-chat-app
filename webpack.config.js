@@ -10,10 +10,13 @@ const outPath = path.join(__dirname, './dist');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const extractSass = new ExtractTextPlugin({
-    filename: "[name].[contenthash].css",
-    //disable: process.env.NODE_ENV === "development"
+  filename: "[name].[contenthash].css",
+  //disable: process.env.NODE_ENV === "development"
 });
-const { TsConfigPathsPlugin, CheckerPlugin } = require('awesome-typescript-loader');
+const {
+  TsConfigPathsPlugin,
+  CheckerPlugin
+} = require('awesome-typescript-loader');
 
 module.exports = {
   context: sourcePath,
@@ -24,7 +27,6 @@ module.exports = {
       'react-dom',
       'react-redux',
       'react-router',
-      'react-router-redux',
       'redux'
     ]
   },
@@ -45,9 +47,9 @@ module.exports = {
       // .ts, .tsx
       {
         test: /\.tsx?$/,
-        use: isProduction
-          ? 'awesome-typescript-loader?module=es6'
-          : [
+        use: isProduction ?
+          'awesome-typescript-loader?module=es6' :
+          [
             'react-hot-loader',
             'awesome-typescript-loader'
           ]
@@ -56,8 +58,7 @@ module.exports = {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: [
-            {
+          use: [{
               loader: 'css-loader',
               query: {
                 modules: true,
@@ -81,9 +82,18 @@ module.exports = {
         })
       },
       // static assets 
-      { test: /\.html$/, loader: 'html-loader' },
-      { test: /\.png$/, loader: 'url-loader?limit=10000' },
-      { test: /\.jpg$/, loader: 'file-loader' },
+      {
+        test: /\.html$/,
+        loader: 'html-loader'
+      },
+      {
+        test: /\.png$/,
+        loader: 'url-loader?limit=10000'
+      },
+      {
+        test: /\.jpg$/,
+        loader: 'file-loader'
+      },
     ],
   },
   plugins: [
@@ -93,11 +103,15 @@ module.exports = {
       options: {
         context: sourcePath,
         postcss: [
-          require('postcss-import')({ addDependencyTo: webpack }),
+          require('postcss-import')({
+            addDependencyTo: webpack
+          }),
           require('postcss-url')(),
           require('postcss-cssnext')(),
           require('postcss-reporter')(),
-          require('postcss-browser-reporter')({ disabled: isProduction }),
+          require('postcss-browser-reporter')({
+            disabled: isProduction
+          }),
         ]
       }
     }),
@@ -116,6 +130,29 @@ module.exports = {
     contentBase: sourcePath,
     hot: true,
     stats: {
+      assets: false,
+      cached: false,
+      cachedAssets: false,
+      children: false,
+      chunks: false,
+      chunkModules: false,
+      chunkOrigins: false,
+      colors: true,
+      depth: false,
+      entrypoints: false,
+      errors: true,
+      errorDetails: false,
+      hash: false,
+      maxModules: 0,
+      modules: false,
+      performance: false,
+      providedExports: false,
+      publicPath: false,
+      reasons: false,
+      source: false,
+      timings: false,
+      usedExports: false,
+      version: false,
       warnings: false
     },
   },
