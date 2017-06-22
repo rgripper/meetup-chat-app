@@ -1,35 +1,25 @@
 import * as React from 'react';
+import { connect } from "react-redux";
+
+import { Login } from "../app/chat/Login";
+import { Chat } from "../app/chat/Chat";
+import { AppActions } from "../store/app/createAppActions";
 import { AppState } from '../store/app/AppState';
 import { ChatStateType, ChatState } from "../store/app/chat/ChatState";
-import { connect } from "react-redux";
-import { Login } from "../app/chat/Login";
-import { SubmittedMessage } from '../messaging/SubmittedMessage';
 
-type Actions = {
-  sendMessage: (x: SubmittedMessage) => void,
-  join: (userName: string) => void,
-  leave: () => void 
-};
-
-type Props  = Actions & { 
+interface Props {
+  actions: AppActions
   chatState: ChatState
-};
+}
 
 function App(props: Props) {
   switch (props.chatState.type) {
     case ChatStateType.NotAuthenticated:
-      return <Login join={props.join}></Login>
+      return <Login join={props.actions.join}></Login>
     case ChatStateType.Authenticating:
-      return <div className="loader">Loading...</div>;
+      return <div className="loader">Loading...</div>
     case ChatStateType.AuthenticatedAndInitialized:
-      return (
-        <div>
-          <div className="row">
-            <div className="col-sm-9"></div>
-            <div className="col-sm-3"><button className="btn btn-default btn-sm" onClick={props.leave}>Leave</button></div>
-          </div>
-        </div>
-      );
+      return <Chat leave={props.actions.leave} chatState={props.chatState}></Chat>
     case ChatStateType.AuthenticationFailed:
       return (
         <div>
@@ -38,25 +28,17 @@ function App(props: Props) {
             <br />
             {props.chatState.errorMessage}
           </div>
-          <Login join={props.join}></Login>
+          <Login join={props.actions.join}></Login>
         </div>
       );
   }
 }
 
-const mapStateToProps = (
-      state: AppState, 
-      otherProps: { 
-        sendMessage: (x: SubmittedMessage) => void, 
-        join: (userName: string) => void, 
-        leave: () => void 
-      }): Props => ({
-          chatState: state.chatState, 
-          sendMessage: otherProps.sendMessage, 
-          join: otherProps.join, 
-          leave: otherProps.leave 
-      });
+function mapStateToProps(state: AppState, props: { actions: AppActions }): Props {
+  return {
+    actions: props.actions,
+    chatState: state.chatState
+  }
+}
 
-export const AppContainer = connect(
-  mapStateToProps
-)(App);
+export const AppContainer = connect(mapStateToProps)(App);

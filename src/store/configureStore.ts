@@ -1,7 +1,7 @@
 import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
-import { loggerMiddleware } from './loggerMiddleware';
 import { chatStateReducer } from './app/chat/chatStateReducer';
 import { initialAppState, AppState } from "./app/AppState";
+import logger from 'redux-logger';
 
 export function configureStore(initialState: AppState = initialAppState): Store<AppState> {
  
@@ -13,7 +13,7 @@ export function configureStore(initialState: AppState = initialAppState): Store<
     chatState: chatStateReducer
   });
 
-  const createStoreWithMiddleware = applyMiddleware(loggerMiddleware)(create);
+  const createStoreWithMiddleware = applyMiddleware(logger)(create);
 
   const store = createStoreWithMiddleware(reducers, initialState) as Store<AppState>;
 

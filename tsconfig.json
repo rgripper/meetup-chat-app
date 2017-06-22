@@ -7,6 +7,8 @@
     "moduleResolution": "node",
 
     "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noImplicitAny": false,
 
     "skipLibCheck": true,
