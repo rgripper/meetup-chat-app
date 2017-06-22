@@ -1,7 +1,12 @@
 import * as React from 'react';
 
-type Props = { join: (userName: string) => void }
-type State = { userName: string }
+interface Props { 
+    join: (userName: string) => void 
+}
+
+interface State { 
+    userName: string 
+}
 
 export class Login extends React.Component<Props, State> {
 

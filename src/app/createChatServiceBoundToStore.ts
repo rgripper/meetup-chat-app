@@ -4,7 +4,7 @@ import { Message } from "messaging/Message";
 import { ChatStateType } from "../store/app/chat/ChatState";
 import { User } from "messaging/User";
 
-export function configureChatService(chatServerUrl: string, dispatch: (action: ChatAction) => void) {
+export function createChatServiceBoundToStore(chatServerUrl: string, dispatch: (action: ChatAction) => void) {
     return new ChatService(chatServerUrl, {
         handleJoinResult: (joinResult: JoinResult) => dispatch({
             type: ChatActionType.JoinResultReceived,

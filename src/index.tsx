@@ -8,21 +8,21 @@ import { AppContainer } from './app/AppContainer';
 import { appSettings } from './app/appSettings';
 
 import { configureStore } from './store/configureStore';
-import { configureChatService } from "./app/configureChatService";
-import { createActions } from "./store/app/createActions";
+import { createChatServiceBoundToStore } from "./app/createChatServiceBoundToStore";
+import { createAppActions } from "./store/app/createAppActions";
 
 import './index.scss';
 
 const store = configureStore();
 const history = createBrowserHistory();
-const chatService = configureChatService(appSettings.chatServerUrl, store.dispatch.bind(store))
-const actions = createActions(chatService, store);
+const chatService = createChatServiceBoundToStore(appSettings.chatServerUrl, store.dispatch.bind(store))
+const actions = createAppActions(chatService, store);
 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={() => 
-        <AppContainer sendMessage={actions.sendMessage} join={actions.join} leave={actions.leave}>
+        <AppContainer actions={actions}>
         </AppContainer>
       }>
       </Route>
