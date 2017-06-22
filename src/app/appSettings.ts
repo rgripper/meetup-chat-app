@@ -1,3 +1,3 @@
 export const appSettings = {
-    chatServerUrl: 'http://localhost:37753/'
+    chatServerUrl: 'http://localhost:8000/'
 }
