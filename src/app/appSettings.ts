@@ -1,3 +1,3 @@
 export const appSettings = {
-    chatServerUrl: 'http://localhost:8000/'
+    chatServerUrl: 'https://serene-basin-84996.herokuapp.com/'
 }
