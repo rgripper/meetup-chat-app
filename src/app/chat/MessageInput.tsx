@@ -12,7 +12,7 @@ export class MessageInput extends React.Component<Props, State> {
     super(props);
   }
 
-  handleMessageTextChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
+  handleMessageTextChange = (event: React.FormEvent<HTMLInputElement>) => {
     this.setState({ messageText: event.currentTarget.value });
   }
 
@@ -27,7 +27,7 @@ export class MessageInput extends React.Component<Props, State> {
       <form onSubmit={this.handleMessageSubmit}>
         <div className="form-roup row">
           <div className="col-sm-9">
-            <textarea className="form-control" value={this.state.messageText} onInput={this.handleMessageTextChange} required></textarea>
+            <input className="form-control" type="text" value={this.state.messageText} onInput={this.handleMessageTextChange}/>
           </div>
           <div className="col-sm-3">
             <button type="submit" className="btn btn-primary">Send</button>
