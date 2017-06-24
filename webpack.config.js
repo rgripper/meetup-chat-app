@@ -40,7 +40,12 @@ module.exports = {
     extensions: ['.js', '.ts', '.tsx'],
     // Fix webpack's default behavior to not load packages with jsnext:main module
     // https://github.com/Microsoft/TypeScript/issues/11677 
-    mainFields: ['main']
+    mainFields: ['main'],
+    alias: {
+      app: path.resolve(__dirname, 'src/app/'),
+      messaging: path.resolve(__dirname, 'src/messaging/'),
+      store: path.resolve(__dirname, 'src/store/'),
+    }
   },
   module: {
     rules: [

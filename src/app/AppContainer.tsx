@@ -19,7 +19,7 @@ function App(props: Props) {
     case ChatStateType.Authenticating:
       return <div className="loader">Loading...</div>
     case ChatStateType.AuthenticatedAndInitialized:
-      return <Chat leave={props.actions.leave} chatState={props.chatState}></Chat>
+      return <Chat leave={props.actions.leave} sendMessage={props.actions.sendMessage} chatData={props.chatState.data}></Chat>
     case ChatStateType.AuthenticationFailed:
       return (
         <div>

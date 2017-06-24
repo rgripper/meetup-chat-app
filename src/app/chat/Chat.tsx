@@ -1,20 +1,27 @@
 import * as React from 'react';
-import { ChatState } from "store/app/chat/ChatState";
+
+import { SubmittedMessage } from "messaging/SubmittedMessage";
+import { ChatData } from "messaging/ChatData";
+import { UserList } from "app/chat/UserList";
+import { MessageList } from "app/chat/MessageList";
+import { MessageInput } from "app/chat/MessageInput";
 
 interface Props {
   leave(): void
-  chatState: ChatState
+  sendMessage(submittedMessage: SubmittedMessage): void
+  chatData: ChatData
 }
 
 export function Chat(props: Props) {
   return (
     <div>
       <div className="row">
-        <div className="col-sm-9"></div>
-        <div className="col-sm-3">
-          <button onClick={props.leave} className="btn btn-default btn-sm">Leave</button>
-        </div>
+        <div className="col-sm-9"><UserList users={props.chatData.users}></UserList></div>
+        <div className="col-sm-3"><button className="btn btn-default btn-sm" onClick={props.leave}>Leave</button></div>
       </div>
+      
+      <MessageList messages={props.chatData.messages} currentUser={props.chatData.currentUser}></MessageList>
+      <MessageInput sendMessage={props.sendMessage}></MessageInput>
     </div>
   );
 }
