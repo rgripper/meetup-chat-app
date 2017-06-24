@@ -29,7 +29,7 @@ export class DummyChatService {
     sendMessage(messageSubmission: SubmittedMessage) {
         if (this.chatState.type != ChatStateType.AuthenticatedAndInitialized) throw new Error('Invalid state');
         this.lastMessageId++;
-        const newMessage: Message = { ...messageSubmission, id: this.lastMessageId, sender: this.chatState.data.currentUser, creationDate: new Date() };
+        const newMessage: Message = { ...messageSubmission, id: this.lastMessageId, senderName: this.chatState.data.currentUser.name, creationDate: new Date() };
         this.handler.handleMessageReceived(newMessage);
     }
 
@@ -53,7 +53,7 @@ export class DummyChatService {
                 if (otherUsers.length == 0) return;
                 const randomUser = otherUsers[this.getRandomInt(0, otherUsers.length)];
                 this.lastMessageId++;
-                const newMessage: Message = { id: this.lastMessageId, sender: randomUser, text: `Message ${this.lastMessageId} from ${randomUser.name}`, creationDate: new Date() };
+                const newMessage: Message = { id: this.lastMessageId, senderName: randomUser.name, text: `Message ${this.lastMessageId} from ${randomUser.name}`, creationDate: new Date() };
                 handler.handleMessageReceived(newMessage);
                 return;
             }

@@ -3,6 +3,6 @@ import { User } from "./User";
 export interface Message {
   id: any,
   creationDate: Date,
-  sender: User,
+  senderName: string,
   text: string
 }

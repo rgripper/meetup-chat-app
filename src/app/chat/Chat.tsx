@@ -20,7 +20,7 @@ export function Chat(props: Props) {
         <div className="col-sm-3"><button className="btn btn-default btn-sm" onClick={props.leave}>Leave</button></div>
       </div>
       
-      <MessageList messages={props.chatData.messages} currentUser={props.chatData.currentUser}></MessageList>
+      <MessageList chatData={props.chatData}></MessageList>
       <MessageInput sendMessage={props.sendMessage}></MessageInput>
     </div>
   );
